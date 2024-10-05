@@ -1,1 +1,178 @@
-http://127.0.0.1:5500/index.html/index.html
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chúc Mừng Sinh Nhật Người Yêu</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #ffafbd, #ffc3a0);
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            color: #4a148c;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 4em;
+            margin: 20px 0;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        input {
+            padding: 10px;
+            font-size: 1.2em;
+            border: 2px solid #4a148c;
+            border-radius: 5px;
+            outline: none;
+            width: 250px;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #ff6f61;
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 1.5em;
+            display: none;
+            color: #d32f2f;
+        }
+
+        .letter {
+            width: 300px;
+            height: 400px;
+            background-color: #fff;
+            border: 2px solid #4a148c;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            display: none;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .letter.open {
+            display: block;
+        }
+
+        .letter:before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-bottom: 20px solid #4a148c;
+            transform: translateX(-50%);
+        }
+
+        .fireworks {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            display: none;
+        }
+
+        @keyframes explosion {
+            0% { transform: scale(0); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.5; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
+        .firework {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0;
+            animation: explosion 0.6s forwards;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chúc Mừng Sinh Nhật!</h1>
+    <input type="text" id="birthdayInput" placeholder="Nhập ngày sinh (dd/mm)">
+    <div id="message"></div>
+    
+    <div class="letter" id="letter">
+        <p id="letterContent" style="font-size: 1.2em;"></p>
+    </div>
+
+    <div class="fireworks" id="fireworks"></div>
+
+    <script>
+        const input = document.getElementById('birthdayInput');
+        const message = document.getElementById('message');
+        const letter = document.getElementById('letter');
+        const letterContent = document.getElementById('letterContent');
+        const fireworks = document.getElementById('fireworks');
+
+        input.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                if (input.value === '6/10') { // Ngày sinh của người yêu
+                    letterContent.textContent = 'Hi , chúc mừng sinh nhật công chúa trong đôi mắt của tớ . Hôm nay là ngày đặc biệt của cậu nhưng tớ lại khong có cơ hội nói trực tiếp với cậu . Vậy tớ mong là ngày hôm nay cậu hãy tận hưởng trọn vẹn nhó , chúc cậu tuổi mới học giỏi , xinh và đạt được những điều mà bản thân luôn mơ ước tới nhó . Mọi thứ sẽ xứng đáng với cậu thoii . Tớ biết tớ cũng khong có tư cách gì để trò chuyện hay tâm sự gi cả và đây chắc sẽ là món quà tớ dành cho cậu ạ . Mong là mùa đông này trái tim cậu sẽ được sưởi ấm bởi 1 người tụy vời nhé.';
+                    message.style.display = 'none';
+                    letter.classList.add('open');
+                    showFireworks();
+                } else {
+                    message.textContent = 'Ngày sinh không chính xác! 😢';
+                    message.style.display = 'block';
+                    letter.classList.remove('open');
+                }
+            }
+        });
+
+        function showFireworks() {
+            fireworks.style.display = 'block';
+            for (let i = 0; i < 10; i++) {
+                createFirework();
+            }
+        }
+
+        function createFirework() {
+            const firework = document.createElement('div');
+            firework.classList.add('firework');
+            firework.style.backgroundColor = randomColor();
+            firework.style.width = `${Math.random() * 10 + 5}px`;
+            firework.style.height = firework.style.width;
+
+            firework.style.left = `${Math.random() * 100}vw`;
+            firework.style.bottom = '0';
+            firework.style.animationDelay = `${Math.random() * 1}s`;
+            firework.style.animationDuration = '0.6s';
+            fireworks.appendChild(firework);
+
+            setTimeout(() => {
+                firework.remove();
+            }, 600);
+        }
+
+        function randomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+    </script>
+</body>
+</html>
